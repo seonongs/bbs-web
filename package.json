@@ -3,13 +3,18 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "serve": "vue-cli-service serve",
+    "serve": "vue-cli-service serve --port 8000",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "@mdi/font": "^6.6.96",
+    "axios": "^0.27.2",
     "core-js": "^3.8.3",
-    "vue": "^3.2.13"
+    "vue": "^3.2.13",
+    "vue-router": "^4.0.14",
+    "vuex": "^4.0.2",
+    "wave-ui": "^2.37.1"
   },
   "devDependencies": {
     "@babel/core": "^7.12.16",
