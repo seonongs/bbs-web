@@ -2,7 +2,6 @@
   <div>
     create
     <w-form
-        @submit="create"
         allow-submit>
       <w-input
           v-model="title"
@@ -25,14 +24,13 @@
           :validators="[validators.required]"
           outline>
       </w-input>
-      <w-button type="submit">Submit</w-button>
+      <w-button type="button" @click="create">Submit</w-button>
     </w-form>
   </div>
 </template>
 
 <script>
-import axios from "axios";
-import router from "@/router";
+import {bbsCreate} from "@/api";
 
 export default {
   name: "BbsCreateView",
@@ -48,20 +46,16 @@ export default {
   },
   methods: {
     create() {
-      let data = {
+      let param = {
         'title': this.title,
         'content': this.content,
         'writer': this.writer
       }
-      axios.post("http://localhost:8080/api/bbs/", data).then(response => {
-        const {data} = response;
-        console.log("C data: ", data);
-        alert(data);
-        alert(data.id);
-        router.replace(`http://localhost:8080/api/bbs${data.id}`);
-
+      bbsCreate(param).then(response => {
+        console.log("C data: ", response);
+        this.$router.push(`/bbsDetail/${response.data.id}`);
       }).catch(error => {
-        alert(error)
+        console.log(error);
       })
     },
   },

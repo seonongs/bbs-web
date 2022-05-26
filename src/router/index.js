@@ -5,6 +5,7 @@ import BbsListView from "@/views/bbs/BbsListView";
 import BbsCreateView from "@/views/bbs/BbsCreateView";
 import BbsUpdateView from "@/views/bbs/BbsUpdateView";
 import BbsDetailView from "@/views/bbs/BbsDetailView";
+// import NotFoundView from "@/views/NotFoundView";
 
 const routes = [
     {
@@ -37,6 +38,11 @@ const routes = [
         name: "BbsDetailView",
         component: BbsDetailView,
     },
+    // {
+    //     path: '*',
+    //     component: NotFoundView,
+    // },
+
 ];
 
 const router = createRouter({

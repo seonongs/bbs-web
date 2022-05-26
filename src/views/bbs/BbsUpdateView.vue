@@ -1,53 +1,49 @@
 <template>
-    <div>
-      <w-form
-          @submit="updateBbs"
-          allow-submit>
-        <w-input
-            v-model="item.title"
-            class="mb3"
-            placeholder="title"
-            :validators="[validators.required]"
-            outline>
-        </w-input>
-        <w-input
-            v-model="item.content"
-            class="mb3"
-            placeholder="content"
-            :validators="[validators.required]"
-            outline>
-        </w-input>
-        <w-input
-            v-model="item.writer"
-            class="mb3"
-            placeholder="writer"
-            :validators="[validators.required]"
-            outline>
-        </w-input>
-        <w-button @click="list()"> List</w-button>
-        <w-button @click="updateBbs(item.id)"> Update</w-button>
-        <w-button @click="deleteBbs(item.id)"> Delete</w-button>
-      </w-form>
-
-
-
-    </div>
+  <div>
+    <w-form
+        @submit="updateBbs"
+        allow-submit>
+      <w-input
+          v-model="items.title"
+          class="mb3"
+          placeholder="title"
+          :validators="[validators.required]"
+          outline>
+      </w-input>
+      <w-input
+          v-model="items.content"
+          class="mb3"
+          placeholder="content"
+          :validators="[validators.required]"
+          outline>
+      </w-input>
+      <w-input
+          v-model="items.writer"
+          class="mb3"
+          placeholder="writer"
+          :validators="[validators.required]"
+          outline>
+      </w-input>
+      <w-button @click="list()"> List</w-button>
+      <w-button @click="updateBbs()">Update</w-button>
+      <w-button @click="deleteBbs()">Delete</w-button>
+    </w-form>
+  </div>
 </template>
 
 <script>
-import axios from "axios";
-import router from "@/router";
+import {bbsDelete, bbsDetail, bbsUpdate} from "@/api";
 
 export default {
   name: "BbsDetailView",
   data() {
     return {
-      item: {
+      items: {
+        id: '',
         title: '',
         content: '',
         writer: '',
       },
-
       validators: {
         required: value => !!value || 'This field is required'
       }
@@ -55,49 +51,36 @@ export default {
   },
   methods: {
     list() {
-      router.back();
+      this.$router.push(`/bbsList`)
     },
-    updateBbs(id) {
-      let data = {
-        'title': this.item.title,
-        'content': this.item.content,
-        'writer': this.item.writer
+    updateBbs() {
+      let param = {
+        'title': this.items.title,
+        'content': this.items.content,
+        'writer': this.items.writer
       }
-      axios.put(`http://localhost:8080/api/bbs/${id}`, {data})
-          .then(response => {
-        const {data} = response
-        console.log("U data:", data);
-
-            router.replace(`/bbsDetail/${id}`);
-            axios.get(`http://localhost:8080/api/bbs/${id}`, {})
-
-
+      bbsUpdate(this.items.id, param).then(response => {
+        console.log("U data: ", response)
+        this.$router.push(`/bbsDetail/${response.data.id}`);
       }).catch(error => {
-        alert(error)
+        console.log(error)
       })
     },
-    deleteBbs(id) {
-      axios.delete("http://localhost:8080/api/bbs/" + id, {
-
-      }).then(response => {
-        const {data} = response;
-        console.log("D data:", data);
-        router.replace('/bbsList/');
+    deleteBbs() {
+      bbsDelete(this.items.id).then(response => {
+        console.log("D data:", response);
+        this.$router.push(`/bbsList`)
+      }).catch(error => {
+        console.log(error)
       })
-          .catch(error => {
-            alert(error)
-          })
-    },
+    }
   },
   created() {
-    const id = this.$route.params.id;
-    axios.get("http://localhost:8080/api/bbs/" + id, {})
-        .then(response => {
-          const {data} = response
-          console.log("R data:", data)
-          this.item = data
-        }).catch(error => {
-      alert(error)
+    bbsDetail(this.$route.params.id).then(response => {
+      this.items = response.data;
+      console.log("R data: ", response.data)
+    }).catch(error => {
+      alert(error);
     })
   }
 }

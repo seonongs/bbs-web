@@ -1,6 +1,5 @@
 <template>
   <div style="text-align: center">
-
     <w-image :src="require(`@/assets/images/pngegg.png`)"
              :fallback="require(`@/assets/images/not-found.jpg`)"
              tag="안녕"
