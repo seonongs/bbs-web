@@ -1,10 +1,67 @@
 <template>
   <div>
-    <p>total: {{ totalElements }}</p>
-    <p>Pages: {{ totalPages }}</p>
-    <w-button @click="write()">WRITE</w-button>
-    <w-input class="mb2" v-model="keyword"></w-input>
-    <w-button @click="searchKeyword">검색</w-button>
+
+
+
+    <w-flex wrap class="text-center">
+      <div class="xs1 pa1">
+        <div class="primary-dark1--bg py3">xs1</div>
+      </div>
+      <div class="xs11 pa1">
+        <div class="primary-dark1--bg py3">xs11</div>
+      </div>
+
+      <div class="xs2 pa1">
+        <div class="primary--bg py3">xs2</div>
+      </div>
+      <div class="xs10 pa1">
+        <div class="primary--bg py3">xs10</div>
+      </div>
+
+      <div class="xs3 pa1">
+        <div class="primary-light1--bg white py3">xs3</div>
+      </div>
+      <div class="xs9 pa1">
+        <div class="primary-light1--bg white py3">xs9</div>
+      </div>
+
+      <div class="xs4 pa1">
+        <div class="primary-light2--bg white py3">xs4</div>
+      </div>
+      <div class="xs8 pa1">
+        <div class="primary-light2--bg white py3">xs8</div>
+      </div>
+
+      <div class="xs5 pa1">
+        <div class="primary-light3--bg py3">xs5</div>
+      </div>
+      <div class="xs7 pa1">
+        <div class="primary-light3--bg py3">xs7</div>
+      </div>
+    </w-flex>
+
+
+
+
+
+
+
+
+
+    <w-flex wrap :gap="2">
+      <div class="xs10 pa1">
+        <div class="primary-light3--bg py3">total: {{ totalElements }} // Pages: {{ totalPages }}</div>
+      </div>
+      <div class="xs2 pa1">
+        <div class="primary-light3--bg py3"><w-button @click="write()">WRITE</w-button></div>
+      </div>
+      <div class="xs10 pa1">
+        <w-input class="mb1" label="입력하슈" v-model="keyword" @keyup.enter="search"></w-input>
+      </div>
+      <div class="xs2 pa1">
+        <w-button @click="search">검색</w-button>
+      </div>
+    </w-flex>
     <div style="text-align: center">
       <div class="divTable">
         <div class="divTableBody">
@@ -22,13 +79,14 @@
       <option value="5">5개씩</option>
       <option value="10">10개씩</option>
     </select>
-    <PaginationCom :totalPages="totalPages" :currentPage="currentPage" :pageSize="pageSize" :pagePointerQty="pagePointerQty" @pageChanged="pageChanged"></PaginationCom>
+    <PaginationCom :totalPages="totalPages" :currentPage="currentPage" :pageSize="pageSize"
+                   :pagePointerQty="pagePointerQty" @pageChanged="pageChanged"></PaginationCom>
   </div>
 </template>
 
 <script>
 
-import {bbsList, bbsSearch,} from "@/api";
+import {bbsList,} from "@/api";
 import PaginationCom from "@/components/PaginationCom";
 
 export default {
@@ -52,8 +110,8 @@ export default {
       this.$router.push('/bbsCreate')
     },
     search() {
-      bbsList(this.currentPage,this.pageSize).then(response => {
-        if(this.pageSize > response.data.totalElements) {
+      bbsList(this.currentPage, this.pageSize, this.keyword).then(response => {
+        if (this.pageSize > response.data.totalElements) {
           this.pageSize = response.data.totalElements;
         }
         this.items = response.data.content;
@@ -68,22 +126,8 @@ export default {
       this.currentPage = val;
       this.search();
     },
-    searchKeyword() {
-      console.log(this.keyword)
-      bbsSearch(this.keyword).then(response => {
-        this.items = response.data.content
-
-
-      }).catch(error => {
-        alert(error)
-      })
-    }
-  },
-  computed: {
-
   },
   created() {
-
     this.search();
   }
 }

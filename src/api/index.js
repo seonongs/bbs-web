@@ -8,8 +8,8 @@ axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
 const bbsCreate = async(param) => {
     return await axios.post("/bbs", param);
 }
-const bbsList = async(currentPage, pageSize) => {
-    return await axios.get(`/bbs?page=${currentPage}&size=${pageSize}`);
+const bbsList = async(currentPage, pageSize, keyword) => {
+    return await axios.get(`/bbs?page=${currentPage}&size=${pageSize}&keyword=${keyword}&sort=id,DESC`);
 }
 const bbsDetail = async(id) => {
     return await axios.get(`/bbs/${id}`)
@@ -20,9 +20,6 @@ const bbsUpdate = async(id, param) => {
 const bbsDelete = async(id) => {
     return await axios.delete(`/bbs/${id}`)
 }
-const bbsSearch = async(keyword) => {
-    return await axios.get(`/bbs/search?keyword=${keyword}`)
-}
 
 export {
     bbsCreate,
@@ -30,5 +27,4 @@ export {
     bbsDetail,
     bbsUpdate,
     bbsDelete,
-    bbsSearch,
 }
