@@ -40,14 +40,6 @@
       </div>
     </w-flex>
 
-
-
-
-
-
-
-
-
     <w-flex wrap :gap="2">
       <div class="xs10 pa1">
         <div class="primary-light3--bg py3">total: {{ totalElements }} // Pages: {{ totalPages }}</div>
